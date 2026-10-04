@@ -1,0 +1,43 @@
+# Data
+data/raw/
+data/processed/
+*.csv
+*.csv.gz
+
+# Models
+models/*.joblib
+models/*.pkl
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# Environment
+.env
+.venv/
+venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Outputs
+outputs/
+
+# Chroma
+chroma_db/
+
+# Docker
+*.log
