@@ -4,8 +4,8 @@ data/processed/
 *.csv
 *.csv.gz
 
-# Models
-models/*.joblib
+# Models (large training artifacts — keep only the small serving models)
+# models/*.joblib  ← removed: CI/CD needs these for Docker build (~1.9 MB total)
 models/*.pkl
 
 # Python
