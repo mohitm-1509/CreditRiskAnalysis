@@ -82,6 +82,7 @@ def clean_numeric_columns(df: pd.DataFrame) -> pd.DataFrame:
             df["int_rate"]
             .astype(str)
             .str.replace("%", "", regex=False)
+            .replace("nan", np.nan)
             .astype(float)
         )
 

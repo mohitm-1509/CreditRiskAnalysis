@@ -21,11 +21,16 @@ def create_derived_features(df: pd.DataFrame) -> pd.DataFrame:
 
     if "loan_amnt" in df.columns and "annual_inc" in df.columns:
         df["loan_to_income_ratio"] = df["loan_amnt"] / df["annual_inc"].replace(0, np.nan)
+        median_lti = df["loan_to_income_ratio"].median()
+        df["loan_to_income_ratio"] = df["loan_to_income_ratio"].fillna(median_lti)
 
     if "issue_d" in df.columns and "earliest_cr_line" in df.columns:
         df["credit_history_years"] = (
             (pd.to_datetime(df["issue_d"]) - pd.to_datetime(df["earliest_cr_line"])).dt.days / 365.25
         )
+        df["credit_history_years"] = df["credit_history_years"].clip(lower=0)
+        median_ch = df["credit_history_years"].median()
+        df["credit_history_years"] = df["credit_history_years"].fillna(median_ch)
 
     if "revol_util" in df.columns:
         df["credit_util_bin"] = pd.cut(
@@ -44,6 +49,7 @@ def create_derived_features(df: pd.DataFrame) -> pd.DataFrame:
         )
 
     if "dti" in df.columns:
+        df["dti"] = df["dti"].clip(lower=0)
         df["dti_bin"] = pd.cut(
             df["dti"],
             bins=[0, 10, 20, 30, 100],
@@ -119,7 +125,7 @@ def get_model_features(df: pd.DataFrame) -> list[str]:
         "total_rec_late_fee", "recoveries", "collection_recovery_fee",
         "last_pymnt_amnt", "last_fico_range_high", "last_fico_range_low",
     ]
-    features = [c for c in df.columns if c not in exclude and df[c].dtype in [np.float64, np.int64, np.int32, np.float32, np.uint8, int, float]]
+    features = [c for c in df.columns if c not in exclude and pd.api.types.is_numeric_dtype(df[c])]
     return features
 
 

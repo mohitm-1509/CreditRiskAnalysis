@@ -1,0 +1,41 @@
+.gcloudignore
+.git
+.gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Data (large, not needed for API)
+data/
+*.csv
+*.csv.gz
+
+# Outputs (plots, reports — not needed for API)
+outputs/
+chroma_db/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+*.swp
+*.log
+
+# Training / analysis code not needed for serving
+docs/
+dashboard/
+resume/
+sql/
+tests/
+notebooks/
+
+# Docker files (not needed inside Cloud Function)
+Dockerfile
+docker-compose.yml
+.github/
+
+# Do NOT exclude models/ — the API needs them

@@ -20,11 +20,9 @@ def download_lending_club_data() -> Path:
     downloaded_path = Path(downloaded_path)
     print(f"Downloaded to: {downloaded_path}")
 
-    csv_files = list(downloaded_path.rglob("*.csv"))
+    csv_files = [f for f in downloaded_path.rglob("*.csv.gz") if f.is_file()]
     if not csv_files:
-        gz_files = list(downloaded_path.rglob("*.csv.gz"))
-        if gz_files:
-            csv_files = gz_files
+        csv_files = [f for f in downloaded_path.rglob("*.csv") if f.is_file()]
 
     if not csv_files:
         raise FileNotFoundError(f"No CSV files found in {downloaded_path}")
@@ -41,7 +39,10 @@ def download_lending_club_data() -> Path:
     if accepted.exists():
         return accepted
 
-    return next(RAW_DIR.iterdir())
+    csv_in_raw = [f for f in RAW_DIR.iterdir() if f.suffix in (".csv", ".gz")]
+    if not csv_in_raw:
+        raise FileNotFoundError(f"No CSV files found in {RAW_DIR}")
+    return csv_in_raw[0]
 
 
 if __name__ == "__main__":
